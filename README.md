@@ -1,1 +1,3 @@
-# ramtv-parser
+# duns-checker
+
+Приложение для проверки валидности номеров телефонов организаций в UPIK и list-org.com

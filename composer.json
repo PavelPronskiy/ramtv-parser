@@ -1,0 +1,16 @@
+{
+    "name": "ramtv/parser",
+    "description": "",
+    "type": "project",
+    "require": {
+        "php-ffmpeg/php-ffmpeg": "^0.16.0",
+        "php-ffmpeg/extras": "^0.3.1",
+        "nesbot/carbon": "^2.33"
+    },
+    "authors": [
+        {
+            "name": "Pavel Pronskiy",
+            "email": "pavel@pronskiy.ru"
+        }
+    ]
+}

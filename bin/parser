@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /home/ramtv.ru/parser
+php cli/cli.php $@

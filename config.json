@@ -1,0 +1,42 @@
+{
+	"host": "http://ramtv.ru",
+	"links": {
+		"list": {
+			"act": "archive"
+		},
+		"video": {
+			"url": "viewnews.php",
+			"args": {
+				"date": "",
+				"n": ""
+			}
+		}
+	},
+	"news_video_id": 4,
+	"news_text_id": 5,
+	"headers": [
+		"pragma: no-cache",
+		"cache-control: no-cache",
+		"dnt: 1",
+		"upgrade-insecure-requests: 1",
+		"user-agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36",
+		"accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+		"sec-fetch-site: none",
+		"sec-fetch-mode: navigate",
+		"accept-encoding: gzip, deflate, br",
+		"accept-language: ru-RU,ru;q=0.9"
+	],
+	"sql": {
+		"host": "localhost",
+		"db": "ramtvru",
+		"user": "ramtvru",
+		"pass": "ramtvru",
+		"tables": {
+			"posts": "wp_posts",
+			"postmeta": "wp_postmeta",
+			"search_term_results": "wp_search_filter_term_results",
+			"search_filter_cache": "wp_search_filter_cache",
+			"term_relationships": "wp_term_relationships"
+		}
+	}
+}
