@@ -36,7 +36,6 @@ class Controller {
 
 	public function checkExistPost($post_id) : bool
 	{
-		// var_dump($this->getPost($post_id));
 		return $this->getPost($post_id) ? true : false;
 	}
 
