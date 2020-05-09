@@ -61,8 +61,13 @@ class Controller
 			$date_links = $this->getArchiveLinksByDate($this->qp($link));
 			foreach ($date_links as $link_item) {
 				$item = $this->getArchiveNewsItem($this->qp($link_item));
-
 				$item->ID = $maxID++;
+				
+				if ($exporter->checkExistPost($item->ID)) {
+					echo 'Exists post_id: ' . $item->ID . PHP_EOL;
+					continue;
+				}
+				
 				$item->guid = 'https://ramtv.ru/?post_type=news&p=' . $item->ID;
 				if (DRY_RUN === false) {
 					$exporter->insertPost($item);

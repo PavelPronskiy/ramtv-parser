@@ -20,6 +20,26 @@ class Controller {
 		]);
 	}
 
+	public function getPost($post_id)
+	{
+		return self::query([
+			'type' => \PDO::FETCH_OBJ,
+			'mode' => 'row',
+			'prepare' => "SELECT *
+				FROM " . $this->config->sql->tables->posts . " AS p
+					WHERE p.ID = :post_id",
+			'execute' => [
+				':post_id' => $post_id
+			]
+		]);
+	}
+
+	public function checkExistPost($post_id) : bool
+	{
+		// var_dump($this->getPost($post_id));
+		return $this->getPost($post_id) ? true : false;
+	}
+
 	public function relativeNewsCategory($value)
 	{
 		return $value->video ? $this->config->news_video_id : $this->config->news_text_id;
@@ -347,14 +367,17 @@ class Controller {
 	public function imageResize($image, $date_path)
 	{
 		$date_path_abs = PATH_WWW . '/wp-content/uploads/';
-		$imagick = new \Imagick($date_path_abs . $date_path . '/' . $image['orig_file']);
-		// $bname = pathinfo($image['orig_file']);
-		// $new_image_file = $image['out_file'];
-		$imagick->resizeImage($image['width'], $image['height'], \Imagick::FILTER_LANCZOS,1);
-		$imagick->writeImage($date_path_abs . $date_path . '/' . $image['out_file']);
-		$imagick->destroy();
-
-		// return $new_image_file;
+		$orig_file = $date_path_abs . $date_path . '/' . $image['orig_file'];
+		$out_file = $date_path_abs . $date_path . '/' . $image['out_file'];
+		
+		if (!is_file($out_file)) {
+			$imagick = new \Imagick($orig_file);
+			$imagick->resizeImage($image['width'], $image['height'], \Imagick::FILTER_LANCZOS,1);
+			$imagick->writeImage($out_file);
+			$imagick->destroy();
+		} else {
+			echo 'File exists: ' . $out_file . PHP_EOL;
+		}
 	}
 
 	public function insertPostmetaImageAttach($value, $image_meta)
@@ -393,7 +416,10 @@ class Controller {
 			mkdir(PATH_WWW . $value->image_new_path, 0755, true);
 		}
 
-		file_put_contents(PATH_WWW . $value->image_new_path_name, $get_image_content);
+		if (!is_file(PATH_WWW . $value->image_new_path_name)) {
+			file_put_contents(PATH_WWW . $value->image_new_path_name, $get_image_content);
+
+		}
 
 
 		$imagick = new \Imagick(PATH_WWW . $value->image_new_path_name);
@@ -460,7 +486,7 @@ class Controller {
 			'.' . $image_file_name['extension'];
 		
 		$this->imageResizer($value);
-		
+
 		return serialize([
 			'width' => $value->image_orig_width,
 			'height' => $value->image_orig_height,
