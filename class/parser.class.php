@@ -224,7 +224,9 @@ class Controller
 			$text = '';
 		}
 
-		return trim($text);
+		$text = trim($text);
+		$text = preg_replace('%^\s+|\s+$%u', '', $text);
+		return $text;
 	}
 
 	private function getNewUrl($value) : string
