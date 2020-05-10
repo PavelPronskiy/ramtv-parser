@@ -283,7 +283,7 @@ class Controller
 				date("Y", $date) . '/' .
 				date("m", $date) . '/' .
 				$img_pathinfo['filename'] .
-				'-555x280.' . $img_pathinfo['extension'];
+				'-262x173.' . $img_pathinfo['extension'];
 
 
 			$entities->post_content = '<div class="post_content-wrapper">';
