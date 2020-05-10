@@ -266,7 +266,7 @@ class Controller
 			$entities->post_date_gmt = '0000-00-00 00:00:00';
 			$img = $this->getArchiveNewsItemImage($value);
 			
-			if ($img === false) {
+			if ($img === false || empty($img)) {
 				echo 'Break material with no image: ' . $query->date . ' ' . $query->n . PHP_EOL;
 				continue;
 			}
