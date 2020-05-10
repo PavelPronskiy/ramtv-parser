@@ -277,6 +277,11 @@ class Controller
 			$video = $this->getArchiveNewsItemVideo($value);
 			$text = $this->getArchiveNewsItemText($value);
 
+			$text = ltrim($text);
+			var_dump($text);
+			exit;
+
+
 			$entities->post_content = '<div class="post_content-wrapper">';
 			$entities->image_url = $img;
 
