@@ -279,11 +279,6 @@ class Controller
 			$video = $this->getArchiveNewsItemVideo($value);
 			$text = $this->getArchiveNewsItemText($value);
 
-			$text = preg_replace('%^\s+|\s+$%u', '', $text);
-			var_dump($text);
-			exit;
-
-
 			$entities->post_content = '<div class="post_content-wrapper">';
 			$entities->image_url = $img;
 
