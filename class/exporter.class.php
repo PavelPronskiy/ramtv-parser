@@ -6,7 +6,6 @@ class Controller {
 
 	function __construct($config) {
 		$this->config = $config;
-		// self::$instance = $this->instance();
 	}
 
 	public function getPosts()
@@ -67,7 +66,6 @@ class Controller {
 
 		$sft_news_ids_int[] = (int) $value->ID;
 		$search_term_results_imp = implode(',', $sft_news_ids_int);
-		// var_dump($search_term_results_imp);
 
 		self::query([
 			'prepare' => "UPDATE " . $this->config->sql->tables->search_term_results
@@ -354,19 +352,6 @@ class Controller {
 			'height' => $value->thumb_featured_large_height
 		], $value->image_date_path);
 		
-		// var_dump($image_meta);
-
-		// exit;
-
-		// $imagick = new \Imagick($value->);
-		// $bname = pathinfo($image_file);
-		// $new_image_file = $bname['dirname'] . '/' . $bname['filename'] . '-' . $width . 'x' . $height . '.' . $bname['extension'];
-		
-
-		// $thumb->readImage($new_image_file);
-		// $thumb->destroy();
-
-		// return $new_image_file;
 	}
 
 	public function imageResize($image, $date_path)

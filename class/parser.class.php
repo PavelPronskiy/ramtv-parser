@@ -6,11 +6,11 @@ use \Carbon\Carbon;
 
 class Controller
 {
-	function __construct() {
+	function __construct()
+	{
 		$this->curl = \curl_init();
 		$this->dom = new \DOMDocument;
 		$this->config = Config::getConfig();
-		// $this->config = $config;
 		$this->parseArchive();
 	}
 
@@ -26,7 +26,7 @@ class Controller
 		curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($this->curl, CURLOPT_HTTPHEADER, $this->config->headers);
 		curl_setopt($this->curl, CURLOPT_HEADER, true);
-		// curl_setopt($this->curl, CURLOPT_ENCODING, "gzip");
+		curl_setopt($this->curl, CURLOPT_ENCODING, "gzip");
 
 		if (VERBOSE) {
 		   curl_setopt($this->curl, CURLOPT_VERBOSE, true);
@@ -45,7 +45,6 @@ class Controller
 			$results = \iconv($charset, 'UTF-8', $results);
 		}
 
-		// var_dump($results);
 		return $results;
 	}
 
@@ -114,22 +113,6 @@ class Controller
 		return $xpath->query($pattern);
 	}
 
-	private function getArchiveLinks()
-	{
-		$data_results = $this->get(
-			$this->bq($this->config->links->list)
-		);
-
-		$parseHTML = $this->parseHTML($data_results, '//table[@id="border_news"]//a/@href');
-		foreach ($parseHTML as $value) {
-			$links[] = $value->nodeValue;
-		}
-
-		exit;
-
-		return $links;
-	} 
-
 	private function getArchiveLinksRange()
 	{
 		$data_results = $this->get(
@@ -185,7 +168,6 @@ class Controller
 
 		} else {
 			$src = false;
-			// $src = $this->config->host . '/' . 'no_image.jpg';
 		}
 
 		return $src;
@@ -260,25 +242,20 @@ class Controller
 		foreach ($parseHTML as $value) {
 			$date = strtotime($query->date);
 			$format_date = date("Y-m-d H:i:s", $date + ($query->n . '0000') );
-
 			$carbon_date = Carbon::parse($format_date, 'GMT+4');
 			$localize_date = $carbon_date->locale('ru')->isoFormat('Do MMMM, YYYY');
-			// var_dump($localize_date);
-			// exit;
-
 			$entities->post_name = $this->getNewUrl($query);
-			// $entities->newurl = $this->getNewUrl($query);
 			$entities->post_date = $format_date;
 			$entities->post_date_gmt = '0000-00-00 00:00:00';
 			$img = $this->getArchiveNewsItemImage($value);
 			
 			if ($img === false || empty($img)) {
-				echo 'Break material with no image: ' . $query->date . ' ' . $query->n . PHP_EOL;
+				echo 'Break material with no image: ' . $this->bq($query) . PHP_EOL;
 				continue;
 			}
 
 			$img_parse_str = parse_url($img);
-			// $img_replaced_path = str_replace('archive/', '', $img_parse_str['path']);
+
 			$entities->image_new_path_name = '/wp-content/uploads/' .
 				date("Y", $date) . '/' .
 				date("m", $date) . '/' .
@@ -296,22 +273,11 @@ class Controller
 				basename($img_parse_str['path']);
 
 			$entities->image_date_path = date("Y", $date) . '/' . date("m", $date);
-/*			$entities->image_orig_path = date("Y", $date) .
-				'/' . date("m", $date) .
-				'/' . basename($img_parse_str['path']);*/
-			
-			// var_dump($entities->image_name);
-			// exit;
+
 			$video = $this->getArchiveNewsItemVideo($value);
 			$text = $this->getArchiveNewsItemText($value);
 
-			// $video_dimensions = $this->getVideoDimensions($video);
-			// $video_width = $video_dimensions->getWidth();
-			// $video_height = $video_dimensions->getHeight();
-			// var_dump($video_mimetype);
-			// $entities->post_content .= '<div class="post_video">[video width="' . $video_width . '" height="' . $video_height . '" ' . $video_mimetype . '="' . $video . '"][/video]</div>';
 			$entities->post_content = '<div class="post_content-wrapper">';
-			
 			$entities->image_url = $img;
 
 			if (!empty($video)) {
@@ -324,44 +290,42 @@ class Controller
 				$entities->post_title = $localize_date . ' Текстовая новость с номером: ' . $query->n;
 			}
 
-			// $entities->post_content .= '<div class="post_name"><h4>' . $entities->post_title . '</h4></div>';
 			$entities->post_content .= '<div class="post_text"><p>' . $text . '</p></div>';
-			// $entities->post_content .= '<div class="post_image"><img src="' . $img . '" alt="" /></div>';
 			$entities->post_content .= '</div>';
-			// var_dump($this->textShorter($text, 80, '...'));
-			// exit;
 			$entities->post_title = $this->textShorter($text, 80, '...');
-			echo 'Image: ' . $entities->image_url . PHP_EOL;
-
+			
+			if (VERBOSE) {
+				echo 'Image: ' . $entities->image_url . PHP_EOL;
+			}
 		}
 		return $entities;
 	} 
 
 	public function textShorter($string, $max_length, $end_substitute = null, $html_linebreaks = true)
 	{
-	    if($html_linebreaks) $string = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $string);
-	    $string = strip_tags($string); //gets rid of the HTML
+		if($html_linebreaks) $string = preg_replace('/\<br(\s*)?\/?\>/i', "\n", $string);
+		$string = strip_tags($string); //gets rid of the HTML
 
-	    if(empty($string) || mb_strlen($string) <= $max_length) {
-	        if($html_linebreaks) $string = nl2br($string);
-	        return $string;
-	    }
+		if(empty($string) || mb_strlen($string) <= $max_length) {
+			if($html_linebreaks) $string = nl2br($string);
+				return $string;
+		}
 
-	    if($end_substitute) $max_length -= mb_strlen($end_substitute, 'UTF-8');
+		if($end_substitute) $max_length -= mb_strlen($end_substitute, 'UTF-8');
 
-	    $stack_count = 0;
-	    while($max_length > 0){
-	        $char = mb_substr($string, --$max_length, 1, 'UTF-8');
-	        if(preg_match('#[^\p{L}\p{N}]#iu', $char)) $stack_count++; //only alnum characters
-	        elseif($stack_count > 0) {
-	            $max_length++;
-	            break;
-	        }
-	    }
-	    $string = mb_substr($string, 0, $max_length, 'UTF-8').$end_substitute;
-	    if($html_linebreaks) $string = nl2br($string);
+		$stack_count = 0;
+		while($max_length > 0){
+			$char = mb_substr($string, --$max_length, 1, 'UTF-8');
+			if(preg_match('#[^\p{L}\p{N}]#iu', $char)) $stack_count++; //only alnum characters
+			elseif($stack_count > 0) {
+				$max_length++;
+				break;
+			}
+		}
+		
+		$string = mb_substr($string, 0, $max_length, 'UTF-8').$end_substitute;
+		if($html_linebreaks) $string = nl2br($string);
 
-	    return trim($string);
-
+		return trim($string);
 	}
 }
