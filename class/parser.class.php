@@ -173,7 +173,8 @@ class Controller
 		if (isset($value->getElementsByTagName('img')[0])) {
 			$src = $this->config->host . '/' . $value->getElementsByTagName('img')[0]->getAttribute('src');
 		} else {
-			$src = $this->config->host . '/' . 'no_image.jpg';
+			$src = false;
+			// $src = $this->config->host . '/' . 'no_image.jpg';
 		}
 
 		return $src;
@@ -259,6 +260,12 @@ class Controller
 			$entities->post_date = $format_date;
 			$entities->post_date_gmt = '0000-00-00 00:00:00';
 			$img = $this->getArchiveNewsItemImage($value);
+			
+			if ($img === false) {
+				echo 'Break material with no image: ' . $query->date . ' ' . $query->n . PHP_EOL;
+				continue;
+			}
+
 			$img_parse_str = parse_url($img);
 			// $img_replaced_path = str_replace('archive/', '', $img_parse_str['path']);
 			$entities->image_new_path_name = '/wp-content/uploads/' .
