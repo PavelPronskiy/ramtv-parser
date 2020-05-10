@@ -278,6 +278,13 @@ class Controller
 
 			$video = $this->getArchiveNewsItemVideo($value);
 			$text = $this->getArchiveNewsItemText($value);
+	
+			$thumb_img_262x173_file = '/wp-content/uploads/' .
+				date("Y", $date) . '/' .
+				date("m", $date) . '/' .
+				$img_pathinfo['filename'] .
+				'-555x280.' . $img_pathinfo['extension'];
+
 
 			$entities->post_content = '<div class="post_content-wrapper">';
 			$entities->image_url = $img;
@@ -290,6 +297,7 @@ class Controller
 			} else {
 				$entities->video = false;
 				$entities->post_title = $localize_date . ' Текстовая новость с номером: ' . $query->n;
+				$entities->post_content .= '<div class="post_image"><img src="' . $thumb_img_262x173_file . '" /></div>';
 			}
 
 			$entities->post_content .= '<div class="post_text"><p>' . $text . '</p></div>';
