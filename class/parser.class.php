@@ -61,6 +61,11 @@ class Controller
 			$date_links = $this->getArchiveLinksByDate($this->qp($link));
 			foreach ($date_links as $link_item) {
 				$item = $this->getArchiveNewsItem($this->qp($link_item));
+				
+				if (!isset($item->image_url)) {
+					continue;
+				}
+
 				$item->ID = $maxID++;
 				
 				if ($exporter->checkExistPost($item->ID)) {
