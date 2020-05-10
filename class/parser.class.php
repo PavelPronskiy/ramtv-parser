@@ -278,7 +278,7 @@ class Controller
 				basename($img_parse_str['path']);
 
 			$entities->image_date_path = date("Y", $date) . '/' . date("m", $date);
-
+			echo 'Image: ' . $entities->image_url . PHP_EOL;
 /*			$entities->image_orig_path = date("Y", $date) .
 				'/' . date("m", $date) .
 				'/' . basename($img_parse_str['path']);*/
