@@ -177,6 +177,12 @@ class Controller
 	{
 		if (isset($value->getElementsByTagName('img')[0])) {
 			$src = $this->config->host . '/' . $value->getElementsByTagName('img')[0]->getAttribute('src');
+
+			$check_image_found = @file_get_contents($src);
+			if ($check_image_found === false) {
+				$src = false;
+			}
+
 		} else {
 			$src = false;
 			// $src = $this->config->host . '/' . 'no_image.jpg';
