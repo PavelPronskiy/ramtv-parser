@@ -89,11 +89,13 @@ class Controller {
 				field_name,
 				field_value_num,
 				post_parent_id,
+				field_value,
 				term_parent_id
 			) VALUES (
 				:post_id,
 				:field_name,
 				:field_value_num,
+				:field_value,
 				:post_parent_id,
 				:term_parent_id
 			)",
@@ -101,6 +103,7 @@ class Controller {
 				':post_id' => $value->ID,
 				':post_parent_id' => 0,
 				':field_name' => '_sft_news_categories',
+				':field_value' => '',
 				':field_value_num' => $this->relativeNewsCategory($value),
 				':term_parent_id' => 0
 			]
