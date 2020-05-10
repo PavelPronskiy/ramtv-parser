@@ -277,7 +277,7 @@ class Controller
 			$video = $this->getArchiveNewsItemVideo($value);
 			$text = $this->getArchiveNewsItemText($value);
 
-			$text = ltrim($text);
+			$text = preg_replace('%^\s+|\s+$%u', '', $text);
 			var_dump($text);
 			exit;
 
