@@ -366,7 +366,9 @@ class Controller {
 			$imagick->writeImage($out_file);
 			$imagick->destroy();
 		} else {
-			echo 'File exists: ' . $out_file . PHP_EOL;
+			if (VERBOSE) {
+				echo 'File exists: ' . $out_file . PHP_EOL;
+			}
 		}
 	}
 
