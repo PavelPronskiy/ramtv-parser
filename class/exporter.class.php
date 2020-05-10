@@ -86,24 +86,24 @@ class Controller {
 		self::query([
 			'prepare' => "INSERT INTO " . $this->config->sql->tables->search_filter_cache . " (
 				post_id,
-				field_name,
-				field_value_num,
 				post_parent_id,
+				field_name,
 				field_value,
+				field_value_num,
 				term_parent_id
 			) VALUES (
 				:post_id,
-				:field_name,
-				:field_value_num,
-				:field_value,
 				:post_parent_id,
+				:field_name,
+				:field_value,
+				:field_value_num,
 				:term_parent_id
 			)",
 			'execute' => [
 				':post_id' => $value->ID,
 				':post_parent_id' => 0,
 				':field_name' => '_sft_news_categories',
-				':field_value' => '',
+				':field_value' => ' ',
 				':field_value_num' => $this->relativeNewsCategory($value),
 				':term_parent_id' => 0
 			]
