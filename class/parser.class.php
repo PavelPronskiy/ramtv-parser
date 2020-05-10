@@ -294,7 +294,7 @@ class Controller
 
 			$entities->post_content .= '<div class="post_text"><p>' . $text . '</p></div>';
 			$entities->post_content .= '</div>';
-			$entities->post_title = $this->textShorter($text, 80, '...');
+			$entities->post_title = $this->textShorter($text, $this->config->title_size, '...');
 			
 			if (VERBOSE) {
 				echo 'Image: ' . $entities->image_url . PHP_EOL;
