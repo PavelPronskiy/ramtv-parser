@@ -4,15 +4,22 @@
 
 ### Требования:
 
- * php-imagick(jpeg)
+ * php 7.2
+ * php-imagick (jpeg support)
+ * php-mbstring
+ * php-curl
+ * php-dom
+ * php-xml
  * ffmpeg
  * composer
 
 ### Установка:
 ```sh
+apt install php-cli php-imagick php-mbstring php-curl php-dom php-xml ffmpeg composer
 git clone git@github.com:PavelPronskiy/ramtv-parser.git
 cd ramtv-parser/
-composer require
+composer update
+composer show
 ./bin/parser
 ```
 ### Параметры:
