@@ -4,14 +4,15 @@
 
 ### Требования:
 
- * apt install php-imagick ffmpeg composer
- * cd ramtv-parser/
- * composer require
+ * php-imagick(jpeg)
+ * ffmpeg
+ * composer
 
 ### Установка:
 ```sh
 git clone git@github.com:PavelPronskiy/ramtv-parser.git
 cd ramtv-parser/
+composer require
 ./bin/parser
 ```
 ### Параметры:
